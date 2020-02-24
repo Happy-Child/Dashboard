@@ -1,0 +1,22 @@
+<template>
+  <v-col>
+
+    <span class="display-1">Dashboard</span>
+    <v-divider class="my-3"></v-divider>
+
+    <page-content/>
+
+  </v-col>
+</template>
+
+<script>
+  import PageContent from './AdminHome/PageContent'
+
+  export default {
+    name: 'AdminHome',
+
+    components: {
+      PageContent
+    }
+  }
+</script>
