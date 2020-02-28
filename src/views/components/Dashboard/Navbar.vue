@@ -31,7 +31,7 @@
 </template>
 
 <script>
-  import { commonRoutes } from "./../../router/routes-list"
+  import { commonRoutes } from "./../../../router/routes-list"
 
   export default {
     name: "Navbar",

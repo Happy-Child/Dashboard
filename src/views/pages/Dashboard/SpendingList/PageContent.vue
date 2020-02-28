@@ -82,7 +82,7 @@
 
 <script>
   import { mapState, mapActions } from "vuex";
-  import ChartPie from './../../charts/Pie'
+  import ChartPie from './../../../charts/Pie'
 
   export default {
     name: "PageContent",
@@ -121,9 +121,7 @@
     watch: {
       spending: {
         handler(array) {
-          let cloneArray = [...array];
-
-          this.spendingForTable = cloneArray.reverse().map((item, index) => ({
+          this.spendingForTable = [...array].reverse().map((item, index) => ({
             ...item,
             index: index + 1
           }));
@@ -158,7 +156,7 @@
         const letters = '0123456789ABCDEF';
         let color = '#';
 
-        for (var i = 0; i < 6; i++) {
+        for (let i = 0; i < 6; i++) {
           color += letters[Math.floor(Math.random() * letters.length)];
         }
 

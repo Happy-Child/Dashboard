@@ -9,6 +9,6 @@ export default {
   },
   
   [CURRENCY_LOADER](state, loader) {
-    state.loader = loader;
+    state.currencyLoader = loader;
   },
 }

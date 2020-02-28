@@ -2,5 +2,5 @@ export default {
   currencyData: {
     rates: {},
   },
-  categoriesLoader: true,
+  currencyLoader: true,
 }

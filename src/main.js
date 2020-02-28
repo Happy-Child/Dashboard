@@ -1,10 +1,13 @@
+require('./bootstrap');
+
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import globalMixins from './mixins/Global'
 import vuetify from './plugins/vuetify';
 import Toasted from 'vue-toasted';
+
+import globalMixins from './mixins/global'
 import date from './filters/date';
 import currency from './filters/currency';
 import messages from './utils/toasted-messages'
@@ -13,16 +16,21 @@ import Loader from './views/components/Loader'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/database'
+import 'firebase/storage'
 
 Vue.filter('date', date);
 Vue.filter('currency', currency);
+
 Vue.mixin(globalMixins);
+
 Vue.use(Toasted, {
   duration: 3000
 });
+
 Vue.prototype.$messages = messages;
 
 Vue.component('loader', Loader);
+
 Vue.config.productionTip = false;
 
 const firebaseConfig = {

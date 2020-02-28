@@ -28,20 +28,23 @@
 </template>
 
 <script>
-  import AppNavbar from "./../components/Navbar"
-  import AppHeader from "./../components/Header"
+  import AppNavbar from "./../components/Dashboard/Navbar"
+  import AppHeader from "./../components/Dashboard/Header"
   import AppFooter from "./../components/Footer"
 
   export default {
-    name: "Default",
+    name: "Dashboard",
+
     data: () => ({
       drawerState: true,
     }),
+
     methods: {
       drawerToggle() {
         this.drawerState = !this.drawerState;
       }
     },
+
     components: {
       AppNavbar,
       AppHeader,

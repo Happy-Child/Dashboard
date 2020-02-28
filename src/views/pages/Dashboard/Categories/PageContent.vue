@@ -15,7 +15,7 @@
     <loader v-if="categoriesLoading"/>
 
     <v-col
-      v-else-if="!categories.length"
+      v-else-if="!categoriesForList.length"
       cols="12"
       class="font-weight-medium"
     >
@@ -25,7 +25,7 @@
     <template v-else>
       <v-col
         cols="6"
-        v-for="category in categories"
+        v-for="category in categoriesForList"
         :key="category.id"
       >
 
@@ -65,8 +65,18 @@
     name: "PageContent",
 
     data: () => ({
-
+      categoriesForList: []
     }),
+
+    watch: {
+      categories: {
+        handler(array) {
+          this.categoriesForList = [...array].reverse();
+        },
+        immediate: true,
+        deep: true
+      }
+    },
 
     methods: {
       ...mapActions('categories', [
@@ -82,7 +92,7 @@
     },
 
     mounted() {
-      if(!this.categories.length && this.categoriesLoading) {
+      if(!this.categories.length) {
         this.categoriesIndex({})
       }
     }

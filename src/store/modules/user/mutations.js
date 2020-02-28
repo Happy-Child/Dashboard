@@ -12,11 +12,7 @@ export default {
     state.userLoading = loader;
   },
   [CLEAR_USER](state) {
-    state.userData = {
-      name: '',
-      email: '',
-      bill: 0,
-      uid: ''
-    };
+    state.userData = {};
+    state.userLoading = true
   }
 }

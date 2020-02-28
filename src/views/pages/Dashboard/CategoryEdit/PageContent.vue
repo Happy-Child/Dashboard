@@ -42,18 +42,13 @@
 </template>
 
 <script>
-  import { mapActions, mapState } from 'vuex'
+  import { mapActions, mapState, mapGetters } from 'vuex'
 
   export default {
     name: "PageContent",
 
     data: () => ({
       formData: {
-        id: '',
-        name: '',
-        limit: null,
-      },
-      oldCategoryData: {
         id: '',
         name: '',
         limit: null,
@@ -71,16 +66,28 @@
     }),
 
     watch: {
+      categorySingle: {
+        handler(data) {
+          this.formData = {...data, id: ''};
+        },
+        immediate: true,
+        deep: true,
+      },
+
       formData: {
         handler(data) {
           this.disabled = true;
-          this.disabled = JSON.stringify(data) === JSON.stringify(this.oldCategoryData);
+          this.disabled = JSON.stringify(data) === JSON.stringify(this.categorySingle);
         },
         deep: true
       },
     },
 
     methods: {
+      ...mapGetters('categories', [
+        'getCategoryById'
+      ]),
+
       ...mapActions('categories', [
         'categoriesIndex',
         'categoriesUpdate',
@@ -89,7 +96,7 @@
       validateForm () {
         if (!this.$refs.form.validate() && !this.disabled) return true;
 
-        if((this.formData.name !== this.oldCategoryData.name) && this.nameExists()) {
+        if((this.formData.name !== this.categorySingle.name) && this.nameExists()) {
           this.$toasted.error(this.$messages['category-name-exists']);
           return false;
         } else {
@@ -97,33 +104,27 @@
         }
       },
 
+      nameExists() {
+        return this.categories.find(item => item.name === this.formData.name);
+      },
+
       update() {
+        this.formData.id = this.getRouteParam('id');
+
         this.categoriesUpdate(this.formData)
           .then(() => {
-            this.setCategory();
             this.$toasted.success(this.$messages['success']);
           })
           .catch(error => {
             console.log(error);
             this.$toasted.success(this.$messages[error.code]);
           });
-      },
-
-      nameExists() {
-        return this.categories.find(item => item.name === this.formData.name);
-      },
-
-      setCategory() {
-        const categoryId = this.getRouteParam('id');
-        const getCategoryData = this.categories.find(item => item.id === categoryId);
-
-        this.oldCategoryData = {...getCategoryData};
-        this.formData = {...getCategoryData};
       }
     },
 
     computed: {
       ...mapState('categories', [
+        'categorySingle',
         'categories',
         'categoriesLoading'
       ])
@@ -132,13 +133,9 @@
     mounted() {
       if(!this.categories.length && this.categoriesLoading) {
         this.categoriesIndex({})
-          .then(() => {
-            this.setCategory();
-          })
+          .then(() => {})
           .catch(error => console.log(error));
       }
-
-      if(!this.categoriesLoading) this.setCategory();
     }
   }
 </script>

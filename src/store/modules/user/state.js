@@ -1,9 +1,4 @@
 export default {
-  userData: {
-    name: '',
-    email: '',
-    bill: 0,
-    uid: ''
-  },
+  userData: {},
   userLoading: true
 }

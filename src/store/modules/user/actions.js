@@ -9,13 +9,28 @@ import {
 
 export default {
   
-  user({commit}, uid) {
+  indexUsers({commit}) {
+  
+  },
+  
+  getUser({commit, state}, uid) {
     commit(USER_LOADING, true);
     
-    return firebase.database().ref(`/users/${uid}/info`).once('value')
+    return firebase.database().ref(`/users/${uid}`).once('value')
       .then(data => {
         commit(SET_USER, data.val());
         commit(`auth/${SET_IS_AUTH}`, true, { root: true });
+        return firebase.storage().ref().child(data.val().avatar);
+      })
+      .then(data => {
+        return data.getDownloadURL();
+      })
+      .then(url => {
+        const userData = state.userData;
+        commit(SET_USER, {
+          ...userData,
+          avatarUrl: url
+        });
         commit(USER_LOADING, false);
       })
       .catch(error => {
@@ -25,16 +40,37 @@ export default {
       })
   },
   
-  update({commit, dispatch, state}, formData) {
+  updateUser({commit, dispatch, state}, formData) {
     commit(USER_LOADING, true);
     
-    const userPromise = dispatch('auth/getUserData', null, { root: true });
+    // Parts
+    const updateUserAvatar = () => {
+      return firebase.storage().ref()
+        .child(formData.data.newAvatar.name)
+        .putString(formData.data.newAvatar.string, 'data_url')
+        .then(() => {
+          return firebase.database().ref().update({
+            [`/users/${state.userData.uid}/avatar`]: formData.data.newAvatar.name
+          });
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    };
     
-    const updataDB = () => {
+    const updateUserDataDB = () => {
       return firebase.database().ref().update({
-        [`/users/${state.userData.uid}/info/name`]: formData.data.name,
-        [`/users/${state.userData.uid}/info/email`]: formData.data.email
-      });
+          [`/users/${state.userData.uid}/name`]: formData.data.name,
+          [`/users/${state.userData.uid}/email`]: formData.data.email
+        })
+        .then(() => {
+          if(formData.data.newAvatar.string && formData.data.newAvatar.name) {
+            return updateUserAvatar();
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
     };
   
     const promiseName = (user) => {
@@ -48,7 +84,7 @@ export default {
     };
   
     const promisePassword = (user) => {
-      if(formData.passwords.old_password.length && formData.passwords.new_password.length) {
+      if(formData.passwords.password.length && formData.passwords.new_password.length) {
         console.log('before 2');
         return user.updatePassword(formData.passwords.new_password);
       } else {
@@ -58,10 +94,11 @@ export default {
   
     let credential = firebase.auth.EmailAuthProvider.credential(
       state.userData.email,
-      formData.passwords.old_password
+      formData.passwords.password
     );
     
-    return userPromise
+    // Promise
+    return dispatch('getCurrentUser')
       .then(user => user)
       .then(user => {
         return user.reauthenticateWithCredential(credential)
@@ -78,7 +115,7 @@ export default {
       })
       .then(() => {
         console.log('after 2 and all');
-        return updataDB();
+        return updateUserDataDB();
       })
       .then(() => {
         commit(SET_USER, {...formData.data});
@@ -92,5 +129,9 @@ export default {
         commit(USER_LOADING, false);
       });
   },
+  
+  getCurrentUser() {
+    return firebase.auth().currentUser;
+  }
   
 }

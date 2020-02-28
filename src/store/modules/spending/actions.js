@@ -2,6 +2,7 @@ import firebase from 'firebase/app'
 
 import {
   SET_SPENDING,
+  SET_SPENDING_SINGLE,
   SPENDING_LOADING,
   SET_TOASTED_MESSAGE,
   USER_LOADING,
@@ -9,10 +10,29 @@ import {
 
 export default {
   
-  spendingIndex({commit}) {
+  spendingSingle({commit, rootState}, id) {
     commit(SPENDING_LOADING, true);
+  
+    const uid = rootState.user.userData.uid;
     
-    return firebase.database().ref(`/spending`).once('value')
+    return firebase.database().ref(`/user_spending/${uid}/${id}`).once('value')
+      .then(data => {
+        commit(SPENDING_LOADING, false);
+        if(data.val()) commit(SET_SPENDING_SINGLE, data.val());
+      })
+      .catch(error => {
+        commit(SPENDING_LOADING, false);
+        commit(SET_TOASTED_MESSAGE, {data: error, type: 'error'}, {root: true});
+        throw error;
+      })
+  },
+  
+  spendingIndex({commit, rootState}) {
+    commit(SPENDING_LOADING, true);
+  
+    const uid = rootState.user.userData.uid;
+    
+    return firebase.database().ref(`/user_spending/${uid}`).once('value')
       .then(data => {
         commit(SET_SPENDING, data.val());
         commit(SPENDING_LOADING, false);
@@ -32,19 +52,19 @@ export default {
     
     const updateUserBill = () => {
       return firebase.database().ref().update({
-        [`/users/${uid}/info/bill`]: data.newBill,
+        [`/users/${uid}/bill`]: data.newBill,
       });
     };
 
-    return firebase.database().ref(`/spending`).push({
-      ...data.formData,
-      date: Date.now()
+    return firebase.database().ref(`/user_spending/${uid}`).push({
+        ...data.formData,
+        date: Date.now()
       })
         .then(() => {
           return Promise.all([
             updateUserBill(),
             dispatch('spendingIndex'),
-            dispatch('user/user', uid, { root: true })
+            dispatch('user/getUser', uid, { root: true })
           ]);
         })
         .then(() => {

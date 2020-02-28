@@ -1,193 +1,169 @@
 <template>
 
-  <v-row justify="center">
-    <v-dialog v-model.trim="modal" persistent max-width="600px">
-      <v-card>
+  <v-dialog v-model.trim="modalShow" persistent max-width="600px">
+    <v-card>
 
-        <v-card-title>
-          <span class="headline">
-            {{ title }}
-          </span>
-        </v-card-title>
+      <v-btn
+        class="btn-close-cross"
+        v-if="showCloseCross"
+        icon
+        @click="close"
+      >
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
 
-        <v-card-text>
-          <v-form
-            ref="form"
-            v-model.trim="formValid"
-            lazy-validation
-          >
-            <v-text-field
-              v-if="type === 'registration'"
-              v-model.trim="userData.name"
-              :counter="20"
-              :rules="rules.name"
-              label="Name"
-              required
-            ></v-text-field>
+      <v-card-title v-if="showHeader">
+        <span class="headline">
+          {{ title }}
+        </span>
+      </v-card-title>
 
-            <v-text-field
-              v-model.trim="userData.email"
-              :rules="rules.email"
-              label="E-mail"
-              required
-            ></v-text-field>
+      <v-card-text>
+        <slot name="body"></slot>
+      </v-card-text>
 
-            <v-text-field
-              v-if="type === 'registration'"
-              v-model.trim="userData.bill"
-              :rules="rules.bill"
-              label="Bill"
-              prefix="$"
-              required
-              type="number"
-            ></v-text-field>
-
-            <v-text-field
-              v-model.trim="userData.password"
-              :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-              :type="showPassword ? 'text' : 'password'"
-              :rules="[rules.password.required, rules.password.min]"
-              name="password"
-              label="Password"
-              counter
-              @click:append="showPassword = !showPassword"
-            ></v-text-field>
-
-            <v-checkbox
-              v-if="type === 'registration'"
-              v-model.trim="userData.agree"
-              :rules="[v => !!v || 'You must agree to continue!']"
-              label="I agree to the processing of data."
-              required
-            ></v-checkbox>
-
-            <v-btn
-              color="success d-block form-btn mt-4"
-              @click="validateForm"
-              :loading="loginLoading"
-              large
+      <v-card-text v-if="showButtons || showSubButtons" class="body-2">
+        <v-row v-if="showButtons" class="align-center justify-center mb-4">
+          <slot name="buttons">
+            <v-col
+              :cols="(!showCancel && !customButton) ? 12 : 6"
+              v-if="showConfirm"
+              class="py-0"
             >
-              Submit
-            </v-btn>
+              <v-btn
+                class="modal-btn"
+                color="success"
+                @click="confirm"
+                :loading="modalLoading"
+                large
+              >
+                {{ confirmButtonText }}
+              </v-btn>
+            </v-col>
 
-          </v-form>
-        </v-card-text>
+            <v-col
+              :cols="(!showConfirm && !customButton) ? 12 : 6"
+              v-if="showCancel"
+              class="py-0"
+            >
+              <v-btn
+                class="modal-btn"
+                v-if="showCancel"
+                color="danger"
+                @click="close"
+                :loading="modalLoading"
+                large
+              >
+                {{ cancelButtonText }}
+              </v-btn>
+            </v-col>
 
-        <v-card-text class="body-2 d-flex align-center justify-center">
-          <template v-if="type === 'login'">
-            <span class="mr-2">No account?</span>
+            <v-col
+              v-if="customButton && !showCancel || !showConfirm"
+              :cols="(!showCancel && !showConfirm) ? 12 : 6"
+              class="py-0"
+            >
+              <slot name="customButton"></slot>
+            </v-col>
+          </slot>
+        </v-row>
 
-            <router-link
-              :to="route('registration')"
-              class="font-weight-medium"
-            >Sign up</router-link>
-          </template>
+        <div v-if="showSubButtons" class="d-flex flex-column align-center justify-center">
+          <slot name="subButtons"></slot>
+        </div>
+      </v-card-text>
 
-          <template v-else>
-            <span class="mr-2">Have an account?</span>
-
-            <router-link
-              :to="route('login')"
-              class="font-weight-medium"
-            >Sign in</router-link>
-          </template>
-        </v-card-text>
-
-      </v-card>
-    </v-dialog>
-  </v-row>
+    </v-card>
+  </v-dialog>
 
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
-  import regValidation from './../../utils/reg-validation'
-
   export default {
     name: "Modal",
 
     props: {
+      modalLoading: {
+        type: Boolean,
+        default: false
+      },
+      modalShow: {
+        type: Boolean,
+        default: false
+      },
       title: {
         type: String,
         default: "Modal"
       },
-      type: {
+      customButton: {
+        type: Boolean,
+        default: false
+      },
+      showButtons: {
+        type: Boolean,
+        default: true
+      },
+      showSubButtons: {
+        type: Boolean,
+        default: true
+      },
+      showConfirm: {
+        type: Boolean,
+        default: true
+      },
+      confirmButtonText: {
         type: String,
-        required: true
+        default: ''
+      },
+      showCancel: {
+        type: Boolean,
+        default: false
+      },
+      cancelButtonText: {
+        type: String,
+        default: 'Cancel'
+      },
+      showCloseCross: {
+        type: Boolean,
+        default: true
+      },
+      closeInEvent: {
+        type: Boolean,
+        default: true
+      },
+      showHeader: {
+        type: Boolean,
+        default: true
       }
     },
 
     data: () => ({
-      loginLoading: false,
-      modal: true,
-      formValid: true,
-      showPassword: false,
-      userData: {
-        name: '',
-        email: '',
-        bill: 1000,
-        password: '',
-        agree: false
-      },
-      rules: {
-        name: [
-          v => !!v || 'Name is required',
-          v => (v && v.length <= 20) || 'Name must be less than 20 characters',
-        ],
-        email: [
-          v => !!v || 'E-mail is required',
-          v => regValidation.email.test(v) || 'E-mail must be valid',
-        ],
-        bill: [
-          v => !!v || 'Bill is required',
-          v => (v && v >= 100) || 'Bill must be no less than 100$',
-        ],
-        password: {
-          required: value => !!value || 'Password is required',
-          min: v => v.length >= 8 || 'Min 8 characters'
-        }
-      }
+
     }),
 
     methods: {
-      ...mapActions('auth', [
-        'login',
-        'registration',
-      ]),
-
-      validateForm () {
-        if (this.$refs.form.validate()) {
-          this.loginLoading = true;
-
-          if (this.type === 'login') this.startLogin();
-          else if(this.type === 'registration') this.startRegistration();
-        }
+      changeLoading(status) {
+        this.$emit('changeLoading', status);
       },
 
-      startLogin() {
-        this.login(this.userData)
-          .then(data => {
-            this.$router.push(this.route('admin.home'));
-            this.$toasted.success(this.$messages['login-success']);
-            this.loginLoading = false;
-          })
-          .catch(error => {
-            this.loginLoading = false;
-          });
+      close() {
+        this.$emit('close');
       },
 
-      startRegistration() {
-        this.registration(this.userData)
-          .then(data => {
-            this.$router.push(this.route('login'));
-            this.$toasted.success(this.$messages['registration-success']);
-            this.loginLoading = false;
-          })
-          .catch(error => {
-            this.loginLoading = false;
-          })
+      confirm() {
+        if(this.closeInEvent) this.close();
+        this.$emit('confirm');
+      },
+
+      sendForm() {
+        if(this.closeInEvent) this.close();
+        this.$emit('sendForm');
       }
-
     }
   }
 </script>
+
+<style lang="sass">
+
+
+</style>

@@ -4,14 +4,34 @@ import {
   SET_CATEGORIES,
   CATEGORIES_LOADING,
   SET_TOASTED_MESSAGE,
+  SET_CATEGORY_SINGLE, SET_SPENDING,
 } from "./../../mutation-types";
 
 export default {
   
-  categoriesIndex({commit}) {
+  categorySingle({commit, rootState}, id) {
     commit(CATEGORIES_LOADING, true);
+  
+    const uid = rootState.user.userData.uid;
     
-    return firebase.database().ref(`/categories`).once('value')
+    return firebase.database().ref(`/user_categories/${uid}/${id}`).once('value')
+      .then(data => {
+        commit(CATEGORIES_LOADING, false);
+        if(data.val()) commit(SET_CATEGORY_SINGLE, data.val());
+      })
+      .catch(error => {
+        commit(CATEGORIES_LOADING, false);
+        commit(SET_TOASTED_MESSAGE, {data: error, type: 'error'}, {root: true});
+        throw error;
+      })
+  },
+  
+  categoriesIndex({commit, rootState}) {
+    commit(CATEGORIES_LOADING, true);
+  
+    const uid = rootState.user.userData.uid;
+    
+    return firebase.database().ref(`/user_categories/${uid}`).once('value')
       .then(data => {
         commit(SET_CATEGORIES, data.val());
         commit(CATEGORIES_LOADING, false);
@@ -23,12 +43,14 @@ export default {
       })
   },
   
-  categoriesUpdate({commit, dispatch}, formData) {
+  categoriesUpdate({commit, dispatch, rootState}, formData) {
     commit(CATEGORIES_LOADING, true);
+  
+    const uid = rootState.user.userData.uid;
     
     return firebase.database().ref().update({
-      [`/categories/${formData.id}/limit`]: formData.limit,
-      [`/categories/${formData.id}/name`]: formData.name
+      [`/user_categories/${uid}/${formData.id}/limit`]: formData.limit,
+      [`/user_categories/${uid}/${formData.id}/name`]: formData.name
     })
       .then(() => {
         return dispatch('categoriesIndex');
@@ -39,10 +61,12 @@ export default {
       });
   },
   
-  categoriesCreate({commit, dispatch}, formData) {
+  categoriesCreate({commit, dispatch, rootState}, formData) {
     commit(CATEGORIES_LOADING, true);
+  
+    const uid = rootState.user.userData.uid;
     
-    return firebase.database().ref(`/categories`).push(formData)
+    return firebase.database().ref(`/user_categories/${uid}`).push(formData)
       .then(() => {
         commit(SET_TOASTED_MESSAGE, {data: {code: 'success'}, type: 'success'}, {root: true});
         return dispatch('categoriesIndex');
