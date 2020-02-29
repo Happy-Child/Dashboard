@@ -53,6 +53,7 @@ export default {
       [`/user_categories/${uid}/${formData.id}/name`]: formData.name
     })
       .then(() => {
+        commit(SET_CATEGORY_SINGLE, {...formData});
         return dispatch('categoriesIndex');
       })
       .catch(error => {

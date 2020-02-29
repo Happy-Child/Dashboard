@@ -56,6 +56,8 @@ export default {
       });
     };
 
+    console.log(data);
+    
     return firebase.database().ref(`/user_spending/${uid}`).push({
         ...data.formData,
         date: Date.now()

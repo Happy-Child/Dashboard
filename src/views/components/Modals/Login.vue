@@ -6,26 +6,25 @@
     :modalLoading="modalLoading"
     confirmButtonText="Login"
     :closeInEvent="false"
-    @changeLoading="setLoading"
     @close="close"
     @confirm="confirm"
     @sendForm="sendForm"
   >
     <template slot="body">
       <v-form
+        @submit.prevent="confirm"
         ref="form"
-        v-model.trim="formValid"
         lazy-validation
       >
         <v-text-field
-          v-model.trim="userData.email"
+          v-model.trim="formData.email"
           :rules="rules.email"
           label="E-mail"
           required
         ></v-text-field>
 
         <v-text-field
-          v-model.trim="userData.password"
+          v-model.trim="formData.password"
           :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
           :type="showPassword ? 'text' : 'password'"
           :rules="[rules.password.required, rules.password.min]"
@@ -64,11 +63,13 @@
   import { mapActions } from 'vuex'
   import Modal from './../../components/Modal'
   import FormRules from './../../../mixins/form-rules'
+  import ModalMethods from './../../../mixins/modal-methods'
+  import FormReset from './../../../mixins/form-reset'
 
   export default {
     name: 'Login',
 
-    mixins: [FormRules],
+    mixins: [FormRules, ModalMethods, FormReset],
 
     props: {
       modalShow: {
@@ -78,10 +79,8 @@
     },
 
     data: () => ({
-      modalLoading: false,
-      formValid: true,
       showPassword: false,
-      userData: {
+      formData: {
         email: '',
         password: '',
       }
@@ -92,27 +91,10 @@
         'login'
       ]),
 
-      validateForm () {
-        if (this.$refs.form.validate()) {
-          this.setLoading(true);
-          this.sendForm();
-        }
-      },
-
-      setLoading(status) {
-        this.modalLoading = status;
-      },
-
-      close() {
-        this.$emit('close');
-      },
-
-      confirm() {
-        this.validateForm();
-      },
-
       sendForm() {
-        this.login(this.userData)
+        this.setLoading(true);
+
+        this.login({...this.formData})
           .then(() => {
             this.$router.push(this.route('admin.home'));
             this.$toasted.success(this.$messages['login-success']);
@@ -125,10 +107,12 @@
       },
 
       showRegistrationModal() {
+        this.formReset();
         this.$emit('showRegistrationModal');
       },
 
       showForgotModal() {
+        this.formReset();
         this.$emit('showForgotModal');
       }
     },

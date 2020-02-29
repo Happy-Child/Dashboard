@@ -83,18 +83,9 @@ export default {
       return user.updateEmail(formData.data.email);
     };
   
-    const promisePassword = (user) => {
-      if(formData.passwords.password.length && formData.passwords.new_password.length) {
-        console.log('before 2');
-        return user.updatePassword(formData.passwords.new_password);
-      } else {
-        return false;
-      }
-    };
-  
     let credential = firebase.auth.EmailAuthProvider.credential(
       state.userData.email,
-      formData.passwords.password
+      formData.password
     );
     
     // Promise
@@ -103,7 +94,6 @@ export default {
       .then(user => {
         return user.reauthenticateWithCredential(credential)
           .then(() => {
-            console.log('1');
             return user;
           })
           .catch(error => {
@@ -111,10 +101,9 @@ export default {
           });
       })
       .then(user => {
-        return Promise.all([promiseName(user), promiseEmail(user), promisePassword(user)]);
+        return Promise.all([promiseName(user), promiseEmail(user)]);
       })
       .then(() => {
-        console.log('after 2 and all');
         return updateUserDataDB();
       })
       .then(() => {

@@ -21,7 +21,6 @@ import SpendingListView from '../views/pages/Dashboard/SpendingListView.vue'
 import SpendingListCreate from '../views/pages/Dashboard/SpendingListCreate.vue'
 import Report from '../views/pages/Dashboard/Report.vue'
 import Profile from '../views/pages/Dashboard/Profile.vue'
-import Chat from '../views/pages/Dashboard/Chat.vue'
 import Error404 from '../views/pages/Dashboard/Error404.vue'
 
 
@@ -97,11 +96,6 @@ export default [
         path: 'profile',
         name: 'admin.profile',
         component: Profile
-      },
-      {
-        path: 'chat',
-        name: 'admin.chat',
-        component: Chat
       }
     ]
   },

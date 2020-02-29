@@ -142,10 +142,6 @@
     }),
 
     methods: {
-      changeLoading(status) {
-        this.$emit('changeLoading', status);
-      },
-
       close() {
         this.$emit('close');
       },

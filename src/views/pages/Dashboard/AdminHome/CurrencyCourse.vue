@@ -56,7 +56,7 @@
 
         return formats.map(format => ({
           currency: format,
-          course: this.currencyData.rates[format],
+          course: this.currencyData.rates[format].toFixed(4),
           date: this.currencyData.date
         }));
       }

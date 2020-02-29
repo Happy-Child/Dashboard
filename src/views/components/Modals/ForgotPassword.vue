@@ -7,19 +7,18 @@
     :modalLoading="modalLoading"
     confirmButtonText="Reset the password"
     :closeInEvent="false"
-    @changeLoading="setLoading"
     @close="close"
     @confirm="confirm"
     @sendForm="sendForm"
   >
     <template slot="body">
       <v-form
+        @submit.prevent="confirm"
         ref="form"
-        v-model.trim="formValid"
         lazy-validation
       >
         <v-text-field
-          v-model.trim="userData.email"
+          v-model.trim="formData.email"
           :rules="rules.email"
           label="E-mail"
           required
@@ -43,11 +42,14 @@
   import { mapActions } from 'vuex'
   import Modal from './../../components/Modal'
   import FormRules from './../../../mixins/form-rules'
+  import ModalMethods from './../../../mixins/modal-methods'
+  import FormReset from './../../../mixins/form-reset'
+  import ResetPassword from './../../../mixins/reset-password'
 
   export default {
-    name: 'Registration',
+    name: 'ForgotPassword',
 
-    mixins: [FormRules],
+    mixins: [FormRules, ModalMethods, FormReset, ResetPassword],
 
     props: {
       modalShow: {
@@ -57,9 +59,7 @@
     },
 
     data: () => ({
-      modalLoading: false,
-      formValid: true,
-      userData: {
+      formData: {
         email: '',
       }
     }),
@@ -69,39 +69,15 @@
         'forgotPassword',
       ]),
 
-      validateForm () {
-        if (this.$refs.form.validate()) {
-          this.setLoading(true);
-          this.sendForm();
-        }
-      },
-
-      close() {
-        this.$emit('close');
-      },
-
-      confirm() {
-        this.validateForm();
-      },
-
       sendForm() {
-        this.forgotPassword(this.userData.email)
+        this.resetPassword()
           .then(() => {
-            this.userData.email = '';
-            this.$toasted.success(this.$messages['forgot-password-success']);
-            this.setLoading(false);
-          })
-          .catch(error => {
-            console.log(error);
-            this.setLoading(false);
-          })
-      },
-
-      setLoading(status) {
-        this.modalLoading = status;
+            this.formReset();
+          });
       },
 
       showLoginModal() {
+        this.formReset();
         this.$emit('showLoginModal');
       }
     },

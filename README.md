@@ -1,5 +1,7 @@
 # dashboard
 
+Result https://example-cc527.firebaseapp.com/
+
 ## Project setup
 ```
 npm install

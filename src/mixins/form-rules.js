@@ -18,7 +18,7 @@ export default {
       ],
       password: {
         required: value => !!value || 'Password is required',
-        min: v => v.length >= 8 || 'Min 8 characters'
+        min: (v => v.length >= 8) || 'Min 8 characters'
       },
       new_password: {
         min: true,

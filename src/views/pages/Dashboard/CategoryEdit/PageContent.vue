@@ -68,7 +68,7 @@
     watch: {
       categorySingle: {
         handler(data) {
-          this.formData = {...data, id: ''};
+          this.formData = {...data};
         },
         immediate: true,
         deep: true,
@@ -111,7 +111,7 @@
       update() {
         this.formData.id = this.getRouteParam('id');
 
-        this.categoriesUpdate(this.formData)
+        this.categoriesUpdate({...this.formData})
           .then(() => {
             this.$toasted.success(this.$messages['success']);
           })

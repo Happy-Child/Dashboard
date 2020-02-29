@@ -9,8 +9,16 @@
       <v-card-text>
         <span
           class="black--text font-weight-regular title d-block"
+          key="USD"
+        >
+          {{ currencyConvert('USD') | currency('USD') }}
+        </span>
+
+        <span
+          v-if="format !== 'USD'"
+          class="black--text font-weight-regular title d-block"
           v-for="(currency, format) in currencyData.rates"
-          :key="currency"
+          :key="format"
         >
           {{ currencyConvert(format) | currency(format) }}
         </span>
@@ -46,7 +54,7 @@
 
     computed: {
       baseCurrency() {
-        return this.userData.bill / (this.currencyData.rates['USD'] / this.currencyData.rates['EUR']);
+        return this.userData.bill;
       }
     }
 

@@ -61,16 +61,19 @@
 
 <script>
   import { mapState, mapActions, mapMutations } from "vuex";
+  import FormReset from './../../../../mixins/form-reset';
 
   export default {
     name: "PageContent",
+
+    mixins: [FormReset],
 
     data: () => ({
       formData: {
         type: null,
         category_id: null,
         amount: null,
-        description: ''
+        description: null
       },
       rules: {
         amount: [
@@ -125,13 +128,13 @@
 
       create() {
         const data = {
-          formData: this.formData,
+          formData: {...this.formData},
           newBill: this.getNewBill()
         };
 
         this.spendingCreate(data)
           .then(() => {
-            this.$refs.form.reset();
+            this.formReset();
           })
           .catch(error => console.log(error));
       }

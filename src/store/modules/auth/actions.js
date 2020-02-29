@@ -89,8 +89,8 @@ export default {
     })
   },
 
-  forgotPassword({commit}, email) {
-    return firebase.auth().sendPasswordResetEmail(email)
+  forgotPassword({commit}, userData) {
+    return firebase.auth().sendPasswordResetEmail(userData.email)
       .then(() => {})
       .catch(error => {
         commit(SET_TOASTED_MESSAGE, {data: error, type: 'error'}, {root: true});

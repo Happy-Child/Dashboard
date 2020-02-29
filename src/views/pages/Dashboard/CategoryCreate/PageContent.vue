@@ -80,7 +80,7 @@
       },
 
       create() {
-        this.categoriesCreate(this.formData)
+        this.categoriesCreate({...this.formData})
           .then(() => {
             this.$refs.form.reset()
           })

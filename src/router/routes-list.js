@@ -18,11 +18,6 @@ const commonRoutes = [
     title: 'Report',
     name: 'admin.report',
     icon: 'mdi-pencil'
-  },
-  {
-    title: 'Chat',
-    name: 'admin.chat',
-    icon: 'mdi-chat'
   }
 ];
 

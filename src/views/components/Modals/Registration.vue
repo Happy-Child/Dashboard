@@ -6,19 +6,18 @@
     :modalShow="modalShow"
     :modalLoading="modalLoading"
     :closeInEvent="false"
-    @changeLoading="setLoading"
     @close="close"
     @confirm="confirm"
     @sendForm="sendForm"
   >
     <template slot="body">
       <v-form
+        @submit.prevent="confirm"
         ref="form"
-        v-model.trim="formValid"
         lazy-validation
       >
         <v-text-field
-          v-model.trim="userData.name"
+          v-model.trim="formData.name"
           :counter="20"
           :rules="rules.name"
           label="Name"
@@ -26,14 +25,14 @@
         ></v-text-field>
 
         <v-text-field
-          v-model.trim="userData.email"
+          v-model.trim="formData.email"
           :rules="rules.email"
           label="E-mail"
           required
         ></v-text-field>
 
         <v-text-field
-          v-model.trim="userData.bill"
+          v-model.trim="formData.bill"
           :rules="rules.bill"
           label="Bill"
           prefix="$"
@@ -42,7 +41,7 @@
         ></v-text-field>
 
         <v-text-field
-          v-model.trim="userData.password"
+          v-model.trim="formData.password"
           :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
           :type="showPassword ? 'text' : 'password'"
           :rules="[rules.password.required, rules.password.min]"
@@ -53,7 +52,7 @@
         ></v-text-field>
 
         <v-checkbox
-          v-model.trim="userData.agree"
+          v-model.trim="formData.agree"
           :rules="[v => !!v || 'You must agree to continue!']"
           label="I agree to the processing of data."
           required
@@ -79,11 +78,13 @@
   import { mapActions } from 'vuex'
   import Modal from './../../components/Modal'
   import FormRules from './../../../mixins/form-rules'
+  import ModalMethods from './../../../mixins/modal-methods'
+  import FormReset from './../../../mixins/form-reset'
 
   export default {
     name: 'Registration',
 
-    mixins: [FormRules],
+    mixins: [FormRules, ModalMethods, FormReset],
 
     props: {
       modalShow: {
@@ -93,10 +94,8 @@
     },
 
     data: () => ({
-      modalLoading: false,
-      formValid: true,
       showPassword: false,
-      userData: {
+      formData: {
         name: '',
         email: '',
         bill: '',
@@ -110,27 +109,10 @@
         'registration'
       ]),
 
-      validateForm () {
-        if (this.$refs.form.validate()) {
-          this.setLoading(true);
-          this.sendForm();
-        }
-      },
-
-      setLoading(status) {
-        this.modalLoading = status;
-      },
-
-      close() {
-        this.$emit('close');
-      },
-
-      confirm() {
-        this.validateForm();
-      },
-
       sendForm() {
-        this.registration(this.userData)
+        this.setLoading(true);
+
+        this.registration({...this.formData})
           .then(() => {
             this.$router.push(this.route('admin.home'));
             this.$toasted.success(this.$messages['registration-success']);
@@ -143,6 +125,7 @@
       },
 
       showLoginModal() {
+        this.formReset();
         this.$emit('showLoginModal');
       }
     },

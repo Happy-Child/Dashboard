@@ -6,7 +6,7 @@ import {
 export default {
   
   currency({commit}) {
-    const url = `http://data.fixer.io/api/latest?access_key=7a9eea15d61d8e53e269ad83dae9d83b&symbols=BYN,USD,EUR`;
+    const url = `https://api.exchangeratesapi.io/latest?symbols=PLN,USD,GBP&base=USD`;
     
     return fetch(url)
       .then(data => data.json())

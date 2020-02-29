@@ -7,7 +7,6 @@
       <v-form
         v-else
         ref="form"
-        v-model.trim="formValid"
         lazy-validation
       >
         <div class="upload-user-avatar d-flex align-start mb-5">
@@ -63,7 +62,7 @@
         </div>
 
         <v-text-field
-          v-model.trim="resultData.name"
+          v-model.trim="formData.name"
           :counter="20"
           :rules="rules.name"
           label="Name"
@@ -71,7 +70,7 @@
         ></v-text-field>
 
         <v-text-field
-          v-model.trim="resultData.email"
+          v-model.trim="formData.email"
           :rules="rules.email"
           label="E-mail"
           required
@@ -79,25 +78,23 @@
 
         <v-text-field
           v-model.trim="password"
-          :append-icon="showOldPassword ? 'mdi-eye' : 'mdi-eye-off'"
-          :type="showOldPassword ? 'text' : 'password'"
+          :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+          :type="showPassword ? 'text' : 'password'"
           :rules="[rules.password.required, rules.password.min]"
           name="Password"
           label="Password"
           counter
-          @click:append="showOldPassword = !showOldPassword"
+          @click:append="showPassword = !showPassword"
         ></v-text-field>
 
-        <v-text-field
-          v-model.trim="new_password"
-          :append-icon="showNewPassword ? 'mdi-eye' : 'mdi-eye-off'"
-          :type="showNewPassword ? 'text' : 'password'"
-          :rules="[rules.new_password.min]"
-          name="New password"
-          label="New password"
-          counter
-          @click:append="showNewPassword = !showNewPassword"
-        ></v-text-field>
+        <div class="d-flex mb-4">
+          <span class="mr-2">Forgot password?</span>
+
+          <span
+            @click="toggleModal"
+            class="font-weight-medium warning--text cursor-pointer"
+          >Password recovery</span>
+        </div>
 
         <v-btn
           color="success"
@@ -110,24 +107,37 @@
 
       </v-form>
     </v-col>
+
+    <modal
+      title="Send a password reset message to your mail?"
+      :modalShow="modalShow"
+      :modalLoading="modalLoading"
+      confirmButtonText="Yes"
+      :closeInEvent="false"
+      @close="toggleModal"
+      @confirm="startResetPassword"
+    ></modal>
+
   </v-row>
 
 </template>
 
 <script>
   import { mapActions, mapState } from 'vuex'
-  import FormRules from './../../../../mixins/form-rules'
   import { Cropper, CircleStencil } from 'vue-advanced-cropper'
+  import Modal from './../../../components/Modal'
+  import FormRules from './../../../../mixins/form-rules'
+  import ModalMethods from './../../../../mixins/modal-methods'
+  import ResetPassword from './../../../../mixins/reset-password'
 
   export default {
     name: "PageContent",
 
-    mixins: [FormRules],
+    mixins: [FormRules, ModalMethods, ResetPassword],
 
     data: () => ({
-      formValid: true,
-      showNewPassword: false,
-      showOldPassword: false,
+      modalShow: false,
+      showPassword: false,
       disabled: true,
       cropperShow: false,
       cropperImage: '',
@@ -136,33 +146,28 @@
         name: '',
         string: ''
       },
-      resultData: {
+      formData: {
         avatarUrl: '',
         name: '',
         email: ''
       },
-      new_password: '',
       password: '',
     }),
 
     watch: {
       userData: {
         handler(data) {
-          this.resultData = {...data};
+          this.formData = {...data};
         },
         immediate: true,
       },
 
-      resultData: {
+      formData: {
         handler(data) {
           this.disabled = true;
           this.disabled = JSON.stringify(data) === JSON.stringify(this.userData);
         },
         deep: true
-      },
-
-      new_password(val) {
-        this.passwordValid(val);
       }
     },
 
@@ -171,6 +176,14 @@
         'updateUser',
         'getUser',
       ]),
+
+      ...mapActions('auth', [
+        'forgotPassword',
+      ]),
+
+      toggleModal() {
+        this.modalShow = !this.modalShow;
+      },
 
       cropperChange({ canvas }) {
         this.newAvatar.string = canvas.toDataURL();
@@ -197,35 +210,17 @@
         }
       },
 
-      passwordValid(val) {
-        this.disabled = true;
-
-        if(val.length > 0) {
-          this.rules.new_password.min = v => (v.length > 0 && v.length >= 8) || 'Min 8 characters';
-          this.disabled = false;
-        } else {
-          this.rules.new_password.min = true;
-        }
-      },
-
       validateForm () {
         if(this.$refs.form.validate() && !this.disabled) this.startUpdate();
       },
 
       startUpdate() {
         let formData = {
-          ...this.resultData,
-          newAvatar: this.newAvatar
-        };
-
-        const passwords = {
-          new_password: this.new_password,
-          password: this.password,
-        };
-
-        formData = {
-          data: formData,
-          passwords
+          data: {
+            ...this.formData,
+            newAvatar: this.newAvatar,
+          },
+          password: this.password
         };
 
         this.updateUser(formData)
@@ -239,8 +234,14 @@
           })
       },
 
+      startResetPassword() {
+        this.resetPassword()
+          .then(() => {
+            this.toggleModal();
+          })
+      },
+
       resetForm() {
-        this.new_password = '';
         this.password = '';
         this.cropperReset();
       },
@@ -264,6 +265,7 @@
     components: {
       Cropper,
       CircleStencil,
+      Modal
     }
   }
 </script>
