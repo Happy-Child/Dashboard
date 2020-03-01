@@ -12,6 +12,11 @@ export const
     SET_IS_AUTH = 'SET_IS_AUTH',
   
     /**
+     * LANG
+     */
+    SET_LANG = 'SET_LANG',
+    
+    /**
      * CURRENCY
      */
     SET_CURRENCY = 'SET_CURRENCY',

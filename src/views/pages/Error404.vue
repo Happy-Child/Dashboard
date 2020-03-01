@@ -14,7 +14,7 @@
         <span class="display-4 font-weight-bold mb-4">404</span>
 
         <v-btn
-          :to="route('admin.home')"
+          :to="route('home')"
           large
           color="warning"
         >

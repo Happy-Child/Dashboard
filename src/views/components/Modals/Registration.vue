@@ -1,8 +1,7 @@
 <template>
 
   <modal
-    title="Registration"
-    confirmButtonText="Registration"
+    title="registration"
     :modalShow="modalShow"
     :modalLoading="modalLoading"
     :closeInEvent="false"
@@ -20,7 +19,7 @@
           v-model.trim="formData.name"
           :counter="20"
           :rules="rules.name"
-          label="Name"
+          :label="language.form.name"
           required
         ></v-text-field>
 
@@ -34,7 +33,7 @@
         <v-text-field
           v-model.trim="formData.bill"
           :rules="rules.bill"
-          label="Bill"
+          :label="language.form.bill"
           prefix="$"
           required
           type="number"
@@ -44,17 +43,17 @@
           v-model.trim="formData.password"
           :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
           :type="showPassword ? 'text' : 'password'"
-          :rules="[rules.password.required, rules.password.min]"
+          :rules="rules.password"
           name="password"
-          label="Password"
+          :label="language.form.password"
           counter
           @click:append="showPassword = !showPassword"
         ></v-text-field>
 
         <v-checkbox
           v-model.trim="formData.agree"
-          :rules="[v => !!v || 'You must agree to continue!']"
-          label="I agree to the processing of data."
+          :rules="rules.checkbox"
+          :label="language.form.processingData"
           required
         ></v-checkbox>
       </v-form>
@@ -62,12 +61,12 @@
 
     <template slot="subButtons">
       <div class="flex">
-        <span class="mr-2">Have an account?</span>
+        <span class="mr-2">{{ language.modals.haveAnAccount }}</span>
 
         <span
           @click="showLoginModal"
           class="font-weight-medium blue--text cursor-pointer"
-        >Sign in</span>
+        >{{ language.modals.singIn }}</span>
       </div>
     </template>
   </modal>

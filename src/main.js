@@ -7,6 +7,7 @@ import store from './store'
 import vuetify from './plugins/vuetify';
 import Toasted from 'vue-toasted';
 
+import lang from './localization'
 import globalMixins from './mixins/global'
 import date from './filters/date';
 import currency from './filters/currency';
@@ -28,6 +29,7 @@ Vue.use(Toasted, {
 });
 
 Vue.prototype.$messages = messages;
+Vue.prototype.$lang = lang;
 
 Vue.component('loader', Loader);
 

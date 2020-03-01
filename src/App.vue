@@ -29,6 +29,16 @@
       ...mapMutations('auth', [
         'SET_IS_AUTH'
       ]),
+
+      ...mapMutations([
+        'SET_LANG'
+      ]),
+
+      setLang() {
+        const storageLang = localStorage.getItem('lang');
+        localStorage.setItem('lang', storageLang || this.curLang);
+        this.SET_LANG(localStorage.getItem('lang'));
+      }
     },
 
     computed: {
@@ -38,6 +48,8 @@
     },
 
     created() {
+      this.setLang();
+
       this.curAuth({})
         .then(() => {})
         .catch(error => console.log(error))

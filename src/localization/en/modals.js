@@ -1,0 +1,16 @@
+export default {
+  modal: 'Modal',
+  login: 'Login',
+  registration: 'Registration',
+  passwordRecovery: 'Password recovery',
+  sendResetPassword: 'Send a password reset message to your mail?',
+  back: 'Back',
+  resetThePassword: 'Reset the password',
+  cancel: 'Cancel',
+  confirm: 'OK',
+  singIn: 'Sing in',
+  singUp: 'Sing up',
+  noAccount: 'No account?',
+  forgotPassword: 'Forgot password?',
+  haveAnAccount: 'Have an account?',
+}

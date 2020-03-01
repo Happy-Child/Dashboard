@@ -1,15 +1,15 @@
 <template>
 
   <modal
-    title="Login"
+    title="login"
     :modalShow="modalShow"
     :modalLoading="modalLoading"
-    confirmButtonText="Login"
     :closeInEvent="false"
     @close="close"
     @confirm="confirm"
     @sendForm="sendForm"
   >
+
     <template slot="body">
       <v-form
         @submit.prevent="confirm"
@@ -27,9 +27,9 @@
           v-model.trim="formData.password"
           :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
           :type="showPassword ? 'text' : 'password'"
-          :rules="[rules.password.required, rules.password.min]"
+          :rules="rules.password"
           name="password"
-          label="Password"
+          :label="language.form.password"
           counter
           @click:append="showPassword = !showPassword"
         ></v-text-field>
@@ -38,21 +38,21 @@
 
     <template slot="subButtons">
       <div class="d-flex justify-center mb-2">
-        <span class="mr-2">No account?</span>
+        <span class="mr-2">{{ language.modals.noAccount }}</span>
 
         <span
           class="font-weight-medium blue--text cursor-pointer"
           @click="showRegistrationModal"
-        >Sign up</span>
+        >{{ language.modals.singUp }}</span>
       </div>
 
       <div class="d-flex justify-center">
-        <span class="mr-2">Forgot password?</span>
+        <span class="mr-2">{{ language.modals.forgotPassword }}</span>
 
         <span
           @click="showForgotModal"
           class="font-weight-medium warning--text cursor-pointer"
-        >Password recovery</span>
+        >{{ language.modals.passwordRecovery }}</span>
       </div>
     </template>
   </modal>

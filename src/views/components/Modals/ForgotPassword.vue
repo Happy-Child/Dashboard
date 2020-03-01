@@ -1,11 +1,11 @@
 <template>
 
   <modal
-    title="Password recovery"
+    title="passwordRecovery"
     :customButton="true"
     :modalShow="modalShow"
     :modalLoading="modalLoading"
-    confirmButtonText="Reset the password"
+    confirmButtonText="resetThePassword"
     :closeInEvent="false"
     @close="close"
     @confirm="confirm"
@@ -32,7 +32,7 @@
         color="danger"
         @click="showLoginModal"
         large
-      >Back</v-btn>
+      >{{ language.modals.back }}</v-btn>
     </template>
   </modal>
 

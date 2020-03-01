@@ -13,7 +13,7 @@
       <span>{{ curDate | date('datetime') }}</span>
     </v-toolbar-title>
 
-    <v-toolbar-title class="ml-auto mr-8">
+    <v-toolbar-title class="ml-auto mr-5">
       <span v-if="!userLoading">
         {{ userData.bill | currency('USD') }}
       </span>

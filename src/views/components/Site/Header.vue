@@ -6,10 +6,12 @@
   >
 
     <v-toolbar-title>
-      <span class="mr-5">Budget control</span>
+      <span class="mr-5">{{ language.header.siteName }}</span>
     </v-toolbar-title>
 
     <v-spacer></v-spacer>
+
+    <lang class="mr-5" />
 
     <div
       v-if="!isAuth"
@@ -20,7 +22,7 @@
         outlined
         @click="toggleModalLogin"
       >
-        Sign in
+        {{ language.modals.singIn }}
       </v-btn>
 
       <v-btn
@@ -28,7 +30,7 @@
         color="success"
         @click="toggleModalRegistration"
       >
-        Sign up
+        {{ language.modals.singUp }}
       </v-btn>
     </div>
 
@@ -57,7 +59,8 @@
 </template>
 
 <script>
-  import { mapActions, mapState } from 'vuex'
+  import { mapState } from 'vuex'
+  import Lang from "./../Lang";
   import UserMenu from "../UserMenu";
   import Login from "./../../components/Modals/Login";
   import Registration from "./../../components/Modals/Registration";
@@ -126,6 +129,7 @@
     },
 
     components: {
+      Lang,
       UserMenu,
       Login,
       Registration,

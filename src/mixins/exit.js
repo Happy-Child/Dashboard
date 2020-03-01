@@ -7,7 +7,8 @@ export default {
           if(this.$route.name !== 'home') {
             this.$router.push(this.route('home'));
           }
-          this.$toasted.info('You are logged out');
+          
+          this.$toasted.info(this.language.messages.youLogged);
         })
         .catch(error => {
           console.log(error);

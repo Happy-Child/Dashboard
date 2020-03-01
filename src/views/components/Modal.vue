@@ -14,7 +14,7 @@
 
       <v-card-title v-if="showHeader">
         <span class="headline">
-          {{ title }}
+          {{ language.modals[title] }}
         </span>
       </v-card-title>
 
@@ -37,7 +37,7 @@
                 :loading="modalLoading"
                 large
               >
-                {{ confirmButtonText }}
+                {{ language.modals[confirmButtonText] }}
               </v-btn>
             </v-col>
 
@@ -54,7 +54,7 @@
                 :loading="modalLoading"
                 large
               >
-                {{ cancelButtonText }}
+                {{ language.modals[cancelButtonText] }}
               </v-btn>
             </v-col>
 
@@ -93,7 +93,7 @@
       },
       title: {
         type: String,
-        default: "Modal"
+        default: 'modal'
       },
       customButton: {
         type: Boolean,
@@ -113,7 +113,7 @@
       },
       confirmButtonText: {
         type: String,
-        default: ''
+        default: 'confirm'
       },
       showCancel: {
         type: Boolean,
@@ -121,7 +121,7 @@
       },
       cancelButtonText: {
         type: String,
-        default: 'Cancel'
+        default: 'cancel'
       },
       showCloseCross: {
         type: Boolean,

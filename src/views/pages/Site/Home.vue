@@ -1,18 +1,16 @@
 <template>
-
   <v-row
     class="text-center fill-height align-center justify-center"
   >
-    <v-col
-      cols="12"
-    >
-      <div class="display-1">Simple tool for budget control</div>
-    </v-col>
-  </v-row>
 
+    <page-content />
+
+  </v-row>
 </template>
 
 <script>
+  import PageContent from "./Home/PageContent";
+
   export default {
     name: "Home",
 
@@ -29,7 +27,7 @@
     },
 
     components: {
-
+      PageContent
     }
   }
 </script>

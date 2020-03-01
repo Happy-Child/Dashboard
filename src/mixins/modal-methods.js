@@ -17,7 +17,7 @@ export default {
     },
   
     close() {
-      this.$refs.form.reset();
+      this.formReset();
       this.$emit('close');
     },
   
