@@ -1,8 +1,6 @@
 <template>
   <div class="d-flex align-center">
 
-    <lang class="mr-5" />
-
     <v-menu
       v-model="userMenuToggle"
       :close-on-click="true"
@@ -40,8 +38,13 @@
             <v-icon>mdi-view-dashboard</v-icon>
           </v-list-item-action>
 
-          <v-list-item-title v-if="$route.name.includes('admin')">Site</v-list-item-title>
-          <v-list-item-title v-else>Dashboard</v-list-item-title>
+          <v-list-item-title v-if="$route.name.includes('admin')">
+            {{ language.common.site }}
+          </v-list-item-title>
+
+          <v-list-item-title v-else>
+            {{ language.common.dashboard }}
+          </v-list-item-title>
         </v-list-item>
 
         <v-list-item
@@ -51,7 +54,9 @@
             <v-icon>mdi-cogs</v-icon>
           </v-list-item-action>
 
-          <v-list-item-title>Settings</v-list-item-title>
+          <v-list-item-title>
+            {{ language.common.settings }}
+          </v-list-item-title>
         </v-list-item>
 
         <v-list-item
@@ -61,7 +66,9 @@
             <v-icon>mdi-exit-to-app</v-icon>
           </v-list-item-action>
 
-          <v-list-item-title>Exit</v-list-item-title>
+          <v-list-item-title>
+            {{ language.common.exit }}
+          </v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
@@ -71,7 +78,6 @@
 
 <script>
   import { mapActions, mapState } from 'vuex'
-  import Lang from "./Lang";
   import ElementToggle from './../../mixins/element-toggle'
   import Exit from './../../mixins/exit'
 
@@ -95,10 +101,6 @@
         'userData',
         'userLoading',
       ]),
-    },
-
-    components: {
-      Lang
     }
   }
 </script>

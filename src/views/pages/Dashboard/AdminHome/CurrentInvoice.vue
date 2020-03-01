@@ -2,7 +2,7 @@
   <v-col cols="4">
     <v-card class="fill-height">
       <v-card-title class="headline warning white--text">
-        Current invoice
+        {{ language.common.currentInvoice }}
       </v-card-title>
       <v-divider></v-divider>
 

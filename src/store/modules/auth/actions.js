@@ -22,7 +22,6 @@ export default {
           return true;
         })
         .catch(error => {
-          commit(SET_TOASTED_MESSAGE, {data: error, type: 'error'}, {root: true});
           throw error;
         });
   },
@@ -40,7 +39,6 @@ export default {
           return true;
         })
         .catch(error => {
-          commit(SET_TOASTED_MESSAGE, {data: error, type: 'error'}, {root: true});
           throw error;
         });
   },
@@ -65,7 +63,6 @@ export default {
           });
       })
       .catch(error => {
-        commit(SET_TOASTED_MESSAGE, {data: error, type: 'error'}, {root: true});
         throw error;
       });
   
@@ -93,7 +90,6 @@ export default {
     return firebase.auth().sendPasswordResetEmail(userData.email)
       .then(() => {})
       .catch(error => {
-        commit(SET_TOASTED_MESSAGE, {data: error, type: 'error'}, {root: true});
         throw error;
       });
   },

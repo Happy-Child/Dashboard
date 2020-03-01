@@ -1,6 +1,7 @@
 import {
   SET_CURRENCY,
   CURRENCY_LOADER,
+  SET_TOASTED_MESSAGE,
 } from "./../../mutation-types";
 
 export default {
@@ -16,6 +17,7 @@ export default {
       })
       .catch(error => {
         console.log(error);
+        commit(SET_TOASTED_MESSAGE, {data: error, type: 'error'}, {root: true});
         throw error;
       })
   },

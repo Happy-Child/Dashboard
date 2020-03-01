@@ -9,13 +9,13 @@
       cols="12"
       class="font-weight-medium"
     >
-      <span>Spending empty.</span>
+      <span>{{ language.common.spendingEmpty }}</span>
     </v-col>
 
     <template v-else>
       <v-col cols="12">
-        <span class="title mr-2">Total spent:</span>
-        <span class="headline">{{ totalSpent }}$</span>
+        <span class="title mr-2">{{ language.common.totalSpent }}:</span>
+        <span class="headline">{{ totalSpent | currency('USD') }}</span>
       </v-col>
 
       <v-col cols="12">
@@ -25,9 +25,9 @@
         >
           <div class="progress-item__title mb-1">
             <span class="font-weight-medium">{{ category.name }}: </span>
-            <span>{{ totalsSpentForCategory[category.id] }}$</span>
-            <span class="mx-1">from</span>
-            <span>{{ category.limit }}$</span>
+            <span>{{ totalsSpentForCategory[category.id] | currency('USD') }}</span>
+            <span class="mx-1">{{ language.common.of }}</span>
+            <span>{{ category.limit | currency('USD') }}</span>
           </div>
 
           <v-tooltip top>
@@ -40,7 +40,11 @@
               ></v-progress-linear>
             </template>
 
-            <span>{{ totalsSpentForCategory[category.id] }}$ from {{ category.limit }}$</span>
+            <span>
+              {{ totalsSpentForCategory[category.id] | currency('USD') }}
+              {{ language.common.of }}
+              {{ category.limit | currency('USD') }}
+            </span>
           </v-tooltip>
 
 

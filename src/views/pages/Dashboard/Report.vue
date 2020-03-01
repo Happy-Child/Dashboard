@@ -1,7 +1,9 @@
 <template>
   <v-col>
 
-    <span class="display-1">Report</span>
+    <span class="display-1">
+      {{ language.common.report }}
+    </span>
     <v-divider class="my-3"></v-divider>
 
     <page-content/>

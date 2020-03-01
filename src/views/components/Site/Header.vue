@@ -11,7 +11,7 @@
 
     <v-spacer></v-spacer>
 
-    <lang class="mr-5" />
+    <lang/>
 
     <div
       v-if="!isAuth"
@@ -34,7 +34,7 @@
       </v-btn>
     </div>
 
-    <user-menu v-else />
+    <user-menu class="ml-5" v-else />
 
     <login
       :modalShow="loginShow"

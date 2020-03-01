@@ -7,20 +7,21 @@
       <v-form
         ref="form"
         lazy-validation
+        :key="curLang"
         v-else
       >
 
         <v-text-field
           v-model.trim="formData.name"
-          :rules="rules.name"
-          label="Name"
+          :rules="rules.categoryName"
+          :label="language.form.name"
           required
         ></v-text-field>
 
         <v-text-field
           v-model.trim="formData.limit"
-          :rules="rules.limit"
-          label="Limit"
+          :rules="rules.categoryLimit"
+          :label="language.form.limit"
           type="number"
           prefix="$"
           required
@@ -32,7 +33,7 @@
           large
           :disabled="disabled"
         >
-          Submit
+          {{ language.modals.confirm }}
         </v-btn>
 
       </v-form>
@@ -43,9 +44,13 @@
 
 <script>
   import { mapActions, mapState, mapGetters } from 'vuex'
+  import FormReset from './../../../../mixins/form-reset';
+  import FormRules from './../../../../mixins/form-rules';
 
   export default {
     name: "PageContent",
+
+    mixins: [FormReset, FormRules],
 
     data: () => ({
       formData: {
@@ -54,15 +59,6 @@
         limit: null,
       },
       disabled: true,
-      rules: {
-        name: [
-          v => !!v || 'Name is required',
-        ],
-        limit: [
-          v => !!v || 'Limit is required',
-          v => (v && v >= 10) || 'Limit must be no less than 10$',
-        ]
-      }
     }),
 
     watch: {
@@ -97,7 +93,8 @@
         if (!this.$refs.form.validate() && !this.disabled) return true;
 
         if((this.formData.name !== this.categorySingle.name) && this.nameExists()) {
-          this.$toasted.error(this.$messages['category-name-exists']);
+          const messageType = this.language.toasted['category-name-exists'];
+          this.$toasted.error(messageType);
           return false;
         } else {
           this.update();
@@ -113,11 +110,13 @@
 
         this.categoriesUpdate({...this.formData})
           .then(() => {
-            this.$toasted.success(this.$messages['success']);
+            const messageType = this.language.toasted['success'];
+            this.$toasted.success(messageType);
           })
           .catch(error => {
             console.log(error);
-            this.$toasted.success(this.$messages[error.code]);
+            const messageType = this.language.toasted[error.code];
+            this.$toasted.error(messageType);
           });
       }
     },

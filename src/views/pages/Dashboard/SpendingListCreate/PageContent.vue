@@ -8,26 +8,27 @@
         v-else
         ref="form"
         lazy-validation
+        :key="curLang"
       >
 
-        <p>Select type</p>
+        <p>{{ language.common.selectType }}</p>
         <v-radio-group
           v-model.trim="formData.type"
           :rules="rules.type"
           required
         >
-          <v-radio label="Income" value="income"></v-radio>
-          <v-radio label="Outcome" value="outcome"></v-radio>
+          <v-radio :label="language.common.income" value="income"></v-radio>
+          <v-radio :label="language.common.outcome" value="outcome"></v-radio>
         </v-radio-group>
 
         <v-select
           :items="categories"
           v-model.trim="formData.category_id"
-          label="Category"
+          :label="language.common.category"
           :rules="rules.categories"
           item-text="name"
           item-value="id"
-          no-data-text="Categories empty"
+          :no-data-text="language.common.categoriesEmpty"
           required
         ></v-select>
 
@@ -35,14 +36,14 @@
           v-model.trim="formData.amount"
           :rules="rules.amount"
           prefix="$"
-          label="Amount"
+          :label="language.common.amount"
           type="number"
           required
         ></v-text-field>
 
         <v-textarea
           v-model.trim="formData.description"
-          label="Description"
+          :label="language.common.description"
         ></v-textarea>
 
         <v-btn
@@ -50,7 +51,7 @@
           @click="validateForm"
           large
         >
-          Submit
+          {{ language.modals.confirm }}
         </v-btn>
 
       </v-form>
@@ -62,11 +63,12 @@
 <script>
   import { mapState, mapActions, mapMutations } from "vuex";
   import FormReset from './../../../../mixins/form-reset';
+  import FormRules from './../../../../mixins/form-rules';
 
   export default {
     name: "PageContent",
 
-    mixins: [FormReset],
+    mixins: [FormReset, FormRules],
 
     data: () => ({
       formData: {
@@ -74,19 +76,7 @@
         category_id: null,
         amount: null,
         description: null
-      },
-      rules: {
-        amount: [
-          v => !!v || 'Amount is required',
-          v => (v && v > 0) || 'Amount must be at least 0',
-        ],
-        categories: [
-          v => !!v || 'Categories is required',
-        ],
-        type: [
-          v => !!v || 'Type is required',
-        ]
-      },
+      }
     }),
 
     methods: {
@@ -108,7 +98,8 @@
           if(this.billMoreOutcome()) {
             this.create();
           } else {
-            this.$toasted.error(this.$messages['bill-less-outcome']);
+            const messageType = this.language.toasted['bill-less-outcome'];
+            this.$toasted.error(messageType);
           }
 
         }
@@ -134,6 +125,7 @@
 
         this.spendingCreate(data)
           .then(() => {
+            this.showMessage('success', 'success');
             this.formReset();
           })
           .catch(error => console.log(error));

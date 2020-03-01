@@ -40,7 +40,7 @@
                     @change="cropperUpload"
                     accept="image/*"
                   >
-                  <span>Upload avatar</span>
+                  <span>{{ language.common.uploadAvatar }}</span>
                 </v-btn>
               </v-col>
 
@@ -51,13 +51,13 @@
                   @click="cropperReset()"
                   large
                 >
-                  <span>Remove new avatar</span>
+                  <span>{{ language.common.removeAvatar }}</span>
                 </v-btn>
               </v-col>
             </v-row>
 
 
-            <span class="d-block">Maximum size - {{ (maxFileSize / 1000000).toFixed(2) }}MB</span>
+            <span class="d-block">{{ language.common.maxSize }} - {{ (maxFileSize / 1000000).toFixed(2) }}MB</span>
           </div>
         </div>
 
@@ -65,14 +65,14 @@
           v-model.trim="formData.name"
           :counter="20"
           :rules="rules.name"
-          label="Name"
+          :label="language.form.name"
           required
         ></v-text-field>
 
         <v-text-field
           v-model.trim="formData.email"
           :rules="rules.email"
-          label="E-mail"
+          :label="language.form.email"
           required
         ></v-text-field>
 
@@ -80,20 +80,20 @@
           v-model.trim="password"
           :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
           :type="showPassword ? 'text' : 'password'"
-          :rules="[rules.password.required, rules.password.min]"
+          :rules="rules.password"
           name="Password"
-          label="Password"
+          :label="language.form.password"
           counter
           @click:append="showPassword = !showPassword"
         ></v-text-field>
 
         <div class="d-flex mb-4">
-          <span class="mr-2">Forgot password?</span>
+          <span class="mr-2">{{ language.modals.forgotPassword }}</span>
 
           <span
             @click="toggleModal"
             class="font-weight-medium warning--text cursor-pointer"
-          >Password recovery</span>
+          >{{ language.modals.passwordRecovery }}</span>
         </div>
 
         <v-btn
@@ -102,17 +102,16 @@
           large
           :disabled="disabled"
         >
-          Submit
+          {{ language.modals.confirm }}
         </v-btn>
 
       </v-form>
     </v-col>
 
     <modal
-      title="Send a password reset message to your mail?"
+      title="sendResetPassword"
       :modalShow="modalShow"
       :modalLoading="modalLoading"
-      confirmButtonText="Yes"
       :closeInEvent="false"
       @close="toggleModal"
       @confirm="startResetPassword"
@@ -206,7 +205,8 @@
           reader.readAsDataURL(input.files[0]);
         }
         else {
-          this.$toasted.error(this.$messages['max-avatar-size']);
+          const messageType = this.language.toasted['max-avatar-size'];
+          this.$toasted.error(messageType);
         }
       },
 
@@ -226,6 +226,7 @@
         this.updateUser(formData)
           .then(() => {
             this.getUser(this.userData.uid);
+            this.showMessage('success', 'success');
             this.resetForm();
           })
           .catch(error => {

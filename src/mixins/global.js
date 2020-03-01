@@ -17,6 +17,11 @@ export default {
   
     getRouteParam(key) {
       return this.$route.params ? this.$route.params[key] : null
+    },
+    
+    showMessage(key, type) {
+      const message = this.language.toasted[key];
+      this.$toasted[type](message);
     }
   }
   

@@ -2,7 +2,7 @@
   <v-col cols="8">
     <v-card class="fill-height">
       <v-card-title class="headline warning white--text">
-        Currency course
+        {{ language.common.currencyCourse }}
       </v-card-title>
       <v-divider></v-divider>
 
@@ -34,23 +34,27 @@
     },
 
     data: () => ({
-      tableHeaders: [
-        {
-          text: 'Сurrency',
-          value: 'currency'
-        },
-        {
-          text: 'Сourse',
-          value: 'course'
-        },
-        {
-          text: 'Date',
-          value: 'date'
-        },
-      ],
+
     }),
 
     computed: {
+      tableHeaders() {
+        return [
+          {
+            text: this.language.common.currency,
+            value: 'currency'
+          },
+          {
+            text: this.language.common.course,
+            value: 'course'
+          },
+          {
+            text: this.language.common.date,
+            value: 'date'
+          },
+        ];
+      },
+
       getCurrencies() {
         const formats = Object.keys(this.currencyData.rates);
 

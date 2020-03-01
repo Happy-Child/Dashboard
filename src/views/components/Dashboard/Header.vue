@@ -9,7 +9,7 @@
     <v-app-bar-nav-icon @click.prevent="drawerToggle"/>
 
     <v-toolbar-title>
-      <span class="mr-5">Application</span>
+      <span class="mr-5">{{ language.header.siteName }}</span>
       <span>{{ curDate | date('datetime') }}</span>
     </v-toolbar-title>
 
@@ -19,14 +19,17 @@
       </span>
     </v-toolbar-title>
 
-    <user-menu/>
+    <lang/>
+
+    <user-menu class="ml-5"/>
 
   </v-app-bar>
 </template>
 
 <script>
-  import { mapActions, mapState } from 'vuex'
+  import { mapState } from 'vuex'
   import UserMenu from "../UserMenu";
+  import Lang from "./../Lang";
 
   export default {
     name: "Header",
@@ -61,7 +64,8 @@
     },
 
     components: {
-      UserMenu
+      Lang,
+      UserMenu,
     }
   }
 </script>

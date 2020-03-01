@@ -11,7 +11,6 @@ import lang from './localization'
 import globalMixins from './mixins/global'
 import date from './filters/date';
 import currency from './filters/currency';
-import messages from './utils/toasted-messages'
 import Loader from './views/components/Loader'
 
 import firebase from 'firebase/app'
@@ -28,7 +27,6 @@ Vue.use(Toasted, {
   duration: 3000
 });
 
-Vue.prototype.$messages = messages;
 Vue.prototype.$lang = lang;
 
 Vue.component('loader', Loader);

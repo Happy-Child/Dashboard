@@ -7,7 +7,7 @@
 
     <v-list dense>
       <v-list-item
-        v-for="link in links"
+        v-for="link in routes"
         :key="link.name"
         :to="route(link.name)"
       >
@@ -31,8 +31,6 @@
 </template>
 
 <script>
-  import { commonRoutes } from "./../../../router/routes-list"
-
   export default {
     name: "Navbar",
 
@@ -43,11 +41,32 @@
       }
     },
 
-    data () {
-      return {
-        links: commonRoutes
+    computed: {
+      routes() {
+        return [
+          {
+            title: this.language.common.dashboard,
+            name: 'admin.home',
+            icon: 'mdi-home'
+          },
+          {
+            title: this.language.common.spendingList,
+            name: 'admin.spending-list',
+            icon: 'mdi-format-list-bulleted'
+          },
+          {
+            title: this.language.common.categories,
+            name: 'admin.categories',
+            icon: 'mdi-inbox-multiple'
+          },
+          {
+            title: this.language.common.report,
+            name: 'admin.report',
+            icon: 'mdi-pencil'
+          }
+        ];
       }
-    },
+    }
   }
 </script>
 

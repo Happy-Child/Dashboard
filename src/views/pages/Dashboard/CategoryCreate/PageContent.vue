@@ -7,20 +7,21 @@
       <v-form
         ref="form"
         lazy-validation
+        :key="curLang"
         v-else
       >
 
         <v-text-field
           v-model.trim="formData.name"
-          :rules="rules.name"
-          label="Name"
+          :rules="rules.categoryName"
+          :label="language.form.name"
           required
         ></v-text-field>
 
         <v-text-field
           v-model.trim="formData.limit"
-          :rules="rules.limit"
-          label="Limit"
+          :rules="rules.categoryLimit"
+          :label="language.form.limit"
           type="number"
           prefix="$"
           required
@@ -31,7 +32,7 @@
           @click="validateForm"
           large
         >
-          Submit
+          {{ language.modals.confirm }}
         </v-btn>
 
       </v-form>
@@ -42,23 +43,18 @@
 
 <script>
   import { mapActions, mapState } from 'vuex'
+  import FormReset from './../../../../mixins/form-reset';
+  import FormRules from './../../../../mixins/form-rules';
 
   export default {
     name: "PageContent",
+
+    mixins: [FormReset, FormRules],
 
     data: () => ({
       formData: {
         name: '',
         limit: null,
-      },
-      rules: {
-        name: [
-          v => !!v || 'Name is required',
-        ],
-        limit: [
-          v => !!v || 'Limit is required',
-          v => (v && v >= 10) || 'Limit must be no less than 10$',
-        ]
       }
     }),
 
@@ -72,7 +68,8 @@
         if (!this.$refs.form.validate()) return true;
 
         if(this.nameExists()) {
-          this.$toasted.error(this.$messages['category-name-exists']);
+          const messageType = this.language.toasted['category-name-exists'];
+          this.$toasted.error(messageType);
           return false;
         } else {
           this.create();
@@ -82,7 +79,8 @@
       create() {
         this.categoriesCreate({...this.formData})
           .then(() => {
-            this.$refs.form.reset()
+            this.showMessage('success', 'success');
+            this.formReset();
           })
           .catch(error => console.log(error));
       },

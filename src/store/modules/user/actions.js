@@ -97,7 +97,7 @@ export default {
             return user;
           })
           .catch(error => {
-            throw error
+            throw error;
           });
       })
       .then(user => {
@@ -108,7 +108,6 @@ export default {
       })
       .then(() => {
         commit(SET_USER, {...formData.data});
-        commit(SET_TOASTED_MESSAGE, {data: {code: 'success'}, type: 'success'}, {root: true});
         commit(USER_LOADING, false);
         return true;
       })
@@ -116,6 +115,7 @@ export default {
         console.log(error);
         commit(SET_TOASTED_MESSAGE, {data: error, type: 'error'}, {root: true});
         commit(USER_LOADING, false);
+        throw error;
       });
   },
   

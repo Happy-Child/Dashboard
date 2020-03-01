@@ -97,11 +97,14 @@
         this.login({...this.formData})
           .then(() => {
             this.$router.push(this.route('admin.home'));
-            this.$toasted.success(this.$messages['login-success']);
+            const messageType = this.language.toasted['login-success'];
+            this.$toasted.success(messageType);
             this.setLoading(false);
           })
           .catch(error => {
             console.log(error);
+            const messageType = this.language.toasted[error.code];
+            this.$toasted.error(messageType);
             this.setLoading(false);
           });
       },

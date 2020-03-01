@@ -48,7 +48,7 @@
           slug: 'en'
         },
         {
-          name: 'Russian',
+          name: 'Русский',
           slug: 'ru'
         }
       ]

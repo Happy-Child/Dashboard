@@ -15,7 +15,8 @@
     watch: {
       message(messageData) {
         if(typeof messageData === 'object') {
-          const message = this.$messages[messageData.data.code] || 'Undefined error';
+          const resultCode = messageData.data.code ? messageData.data.code : 'undefined-error';
+          const message = this.language.toasted[resultCode];
           this.$toasted[messageData.type](message);
         }
       }

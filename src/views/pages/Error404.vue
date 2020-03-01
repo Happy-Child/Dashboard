@@ -19,7 +19,7 @@
           color="warning"
         >
           <v-icon class="mr-2">mdi-home</v-icon>
-          <span>To home</span>
+          <span>{{ language.common.toMain }}</span>
         </v-btn>
 
       </v-row>

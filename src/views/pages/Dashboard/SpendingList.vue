@@ -1,7 +1,9 @@
 <template>
   <v-col>
 
-    <span class="display-1">Spending list</span>
+    <span class="display-1">
+      {{ language.common.spendingList }}
+    </span>
     <v-divider class="my-3"></v-divider>
 
     <page-content/>

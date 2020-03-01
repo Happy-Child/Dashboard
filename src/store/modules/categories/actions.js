@@ -4,7 +4,7 @@ import {
   SET_CATEGORIES,
   CATEGORIES_LOADING,
   SET_TOASTED_MESSAGE,
-  SET_CATEGORY_SINGLE, SET_SPENDING,
+  SET_CATEGORY_SINGLE,
 } from "./../../mutation-types";
 
 export default {
@@ -69,7 +69,6 @@ export default {
     
     return firebase.database().ref(`/user_categories/${uid}`).push(formData)
       .then(() => {
-        commit(SET_TOASTED_MESSAGE, {data: {code: 'success'}, type: 'success'}, {root: true});
         return dispatch('categoriesIndex');
       })
       .catch(error => {

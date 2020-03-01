@@ -9,7 +9,7 @@
         :to="route('admin.spending-list-create')"
       >
         <v-icon class="mr-2">mdi-plus-box-multiple</v-icon>
-        <span>Сreate waste</span>
+        <span>{{ language.common.createPost }}</span>
       </v-btn>
     </v-col>
 
@@ -21,7 +21,7 @@
       cols="12"
       class="font-weight-medium"
     >
-      <span>Spending empty.</span>
+      <span>{{ language.common.spendingEmpty }}</span>
     </v-col>
 
     <template v-else>
@@ -53,7 +53,7 @@
 
           <template v-slot:item.type="{ item }">
             <v-chip :color="getColorForType(item.type)" dark>
-              {{ getType(item.type) }}
+              {{ language.common[item.type] }}
             </v-chip>
           </template>
 
@@ -90,32 +90,6 @@
     data: () => ({
       spendingForTable: [],
       chartOptions: {},
-      tableHeaders: [
-        {
-          text: '№',
-          value: 'index'
-        },
-        {
-          text: 'Amount',
-          value: 'amount'
-        },
-        {
-          text: 'Category',
-          value: 'category_id'
-        },
-        {
-          text: 'Type',
-          value: 'type'
-        },
-        {
-          text: 'Date',
-          value: 'date'
-        },
-        {
-          text: 'Open',
-          value: 'open'
-        }
-      ]
     }),
 
     watch: {
@@ -148,10 +122,6 @@
         return type === 'income' ? 'green' : 'red';
       },
 
-      getType(type) {
-        return type.charAt(0).toUpperCase() + type.slice(1);
-      },
-
       getRandomColor() {
         const letters = '0123456789ABCDEF';
         let color = '#';
@@ -174,6 +144,35 @@
         'categories',
         'categoriesLoading'
       ]),
+
+      tableHeaders() {
+        return [
+          {
+            text: '№',
+            value: 'index'
+          },
+          {
+            text: this.language.common.amount,
+            value: 'amount'
+          },
+          {
+            text: this.language.common.category,
+            value: 'category_id'
+          },
+          {
+            text: this.language.common.type,
+            value: 'type'
+          },
+          {
+            text: this.language.common.date,
+            value: 'date'
+          },
+          {
+            text: this.language.common.open,
+            value: 'open'
+          }
+        ]
+      },
 
       radialData() {
         const result = {

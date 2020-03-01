@@ -8,7 +8,7 @@
         :to="route('admin.category-create')"
       >
         <v-icon class="mr-2">mdi-plus-box-multiple</v-icon>
-        <span>Create category</span>
+        <span>{{ language.common.categoryCreate }}</span>
       </v-btn>
     </v-col>
 
@@ -19,7 +19,7 @@
       cols="12"
       class="font-weight-medium"
     >
-      <span>Categories empty.</span>
+      <span>{{ language.common.categoriesEmpty }}</span>
     </v-col>
 
     <template v-else>
@@ -35,7 +35,7 @@
               <v-list-item-title class="title">{{ category.name }}</v-list-item-title>
 
               <v-list-item-subtitle class="body-1">
-                <span>Limit: </span>
+                <span>{{ language.common.limit }}: </span>
                 <span class="font-weight-medium primary--text">{{ category.limit }}</span>
               </v-list-item-subtitle>
             </v-list-item-content>

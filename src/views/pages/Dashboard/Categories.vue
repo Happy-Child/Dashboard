@@ -1,7 +1,9 @@
 <template>
   <v-col>
 
-    <span class="display-1">Categories</span>
+    <span class="display-1">
+      {{ language.common.categories }}
+    </span>
     <v-divider class="my-3"></v-divider>
 
     <page-content/>

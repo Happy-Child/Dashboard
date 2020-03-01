@@ -1,4 +1,6 @@
 export default {
+  'you-logged': 'You are logged',
+  'undefined-error': 'Undefined error',
   'auth/user-not-found': 'User not found',
   'auth/wrong-password': 'Wrong password',
   'auth/email-already-in-use': 'Email already in use',

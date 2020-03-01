@@ -55,8 +55,6 @@ export default {
         [`/users/${uid}/bill`]: data.newBill,
       });
     };
-
-    console.log(data);
     
     return firebase.database().ref(`/user_spending/${uid}`).push({
         ...data.formData,
@@ -68,9 +66,6 @@ export default {
             dispatch('spendingIndex'),
             dispatch('user/getUser', uid, { root: true })
           ]);
-        })
-        .then(() => {
-          commit(SET_TOASTED_MESSAGE, {data: {code: 'success'}, type: 'success'}, {root: true});
         })
         .catch(error => {
           commit(SPENDING_LOADING, false);
