@@ -1,4 +1,5 @@
 export default {
+  home: 'Home',
   toMain: 'To home',
   dashboard: 'Dashboard',
   spendingList: 'Spending list',

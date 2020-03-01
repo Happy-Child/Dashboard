@@ -26,6 +26,13 @@
 
   export default {
     name: 'CategoryCreate',
+
+    metaInfo() {
+      return {
+        title: this.language.common.categoryCreate
+      }
+    },
+
     components: {
       PageContent
     }

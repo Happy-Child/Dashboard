@@ -30,7 +30,13 @@
 
 <script>
   export default {
-    name: "Error404"
+    name: "Error404",
+
+    metaInfo() {
+      return {
+        title: '404'
+      }
+    },
   }
 </script>
 

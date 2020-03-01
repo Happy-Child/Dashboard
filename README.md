@@ -1,6 +1,6 @@
 # dashboard
 
-Result https://example-cc527.firebaseapp.com/
+Result https://budget-lazuka.firebaseapp.com/
 
 ## Project setup
 ```

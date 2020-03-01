@@ -14,16 +14,10 @@
   export default {
     name: "Home",
 
-    data: () => ({
-
-    }),
-
-    methods: {
-
-    },
-
-    computed: {
-
+    metaInfo() {
+      return {
+        title: this.language.common.home
+      }
     },
 
     components: {

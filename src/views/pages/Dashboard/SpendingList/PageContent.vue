@@ -35,7 +35,7 @@
       <v-col cols="12">
         <v-data-table
           :headers="tableHeaders"
-          :items="spendingForTable"
+          :items="resultItems"
           hide-default-footer
           class="elevation-1"
         >
@@ -74,6 +74,18 @@
           </template>
         </v-data-table>
       </v-col>
+
+      <v-col
+        v-if="defaultItems.length > 1"
+        cols="12"
+        class="text-center mt-2"
+      >
+        <v-pagination
+          v-model="page"
+          :length="pagLength"
+          :total-visible="itemsVisible"
+        ></v-pagination>
+      </v-col>
     </template>
 
   </v-row>
@@ -83,22 +95,26 @@
 <script>
   import { mapState, mapActions } from "vuex";
   import ChartPie from './../../../charts/Pie'
+  import Pagination from './../../../../mixins/pagination'
 
   export default {
     name: "PageContent",
 
+    mixins: [Pagination],
+
     data: () => ({
-      spendingForTable: [],
       chartOptions: {},
     }),
 
     watch: {
       spending: {
         handler(array) {
-          this.spendingForTable = [...array].reverse().map((item, index) => ({
+          const resultArray = [...array].reverse().map((item, index) => ({
             ...item,
             index: index + 1
           }));
+
+          this.setupPagination(resultArray);
         },
         immediate: true,
         deep: true

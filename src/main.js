@@ -6,6 +6,7 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
 import Toasted from 'vue-toasted';
+import VueMeta from 'vue-meta'
 
 import lang from './localization'
 import globalMixins from './mixins/global'
@@ -25,6 +26,10 @@ Vue.mixin(globalMixins);
 
 Vue.use(Toasted, {
   duration: 3000
+});
+
+Vue.use(VueMeta, {
+  refreshOnceOnNavigation: true
 });
 
 Vue.prototype.$lang = lang;

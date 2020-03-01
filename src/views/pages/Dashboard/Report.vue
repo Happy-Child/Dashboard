@@ -1,5 +1,5 @@
 <template>
-  <v-col>
+  <v-col class="d-flex flex-column flex-grow-1">
 
     <span class="display-1">
       {{ language.common.report }}
@@ -16,6 +16,13 @@
 
   export default {
     name: 'Report',
+
+    metaInfo() {
+      return {
+        title: this.language.common.report
+      }
+    },
+
     components: {
       PageContent
     }

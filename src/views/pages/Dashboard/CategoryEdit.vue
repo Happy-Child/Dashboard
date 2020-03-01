@@ -24,6 +24,13 @@
 
   export default {
     name: 'CategoryEdit',
+
+    metaInfo() {
+      return {
+        title: this.language.common.categoryEdit
+      }
+    },
+
     components: {
       PageContent
     }

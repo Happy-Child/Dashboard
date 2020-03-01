@@ -27,10 +27,15 @@
   export default {
     name: 'SpendingListCreate',
 
+    metaInfo() {
+      return {
+        title: this.language.common.spendingCreate
+      }
+    },
+
     components: {
       PageContent
     }
-
 
   }
 </script>

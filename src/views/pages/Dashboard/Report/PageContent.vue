@@ -1,71 +1,101 @@
 <template>
 
-  <v-row class="align-stretch">
+  <div class="d-flex flex-column flex-grow-1">
 
     <loader v-if="spendingLoading || categoriesLoading"/>
 
-    <v-col
-      v-else-if="!categories.length"
-      cols="12"
-      class="font-weight-medium"
-    >
-      <span>{{ language.common.spendingEmpty }}</span>
-    </v-col>
+    <v-row class="flex-grow-0" v-else-if="!categories.length">
+      <v-col
+        cols="12"
+        class="font-weight-medium"
+      >
+        <span>{{ language.common.spendingEmpty }}</span>
+      </v-col>
+    </v-row>
 
     <template v-else>
-      <v-col cols="12">
-        <span class="title mr-2">{{ language.common.totalSpent }}:</span>
-        <span class="headline">{{ totalSpent | currency('USD') }}</span>
-      </v-col>
+      <v-row class="flex-grow-0">
+        <v-col cols="12">
+          <span class="title mr-2">{{ language.common.totalSpent }}:</span>
+          <span class="headline">{{ totalSpent | currency('USD') }}</span>
+        </v-col>
+      </v-row>
 
-      <v-col cols="12">
-        <div
-          v-for="category in categories"
-          class="progress-item mb-5"
-        >
-          <div class="progress-item__title mb-1">
-            <span class="font-weight-medium">{{ category.name }}: </span>
-            <span>{{ totalsSpentForCategory[category.id] | currency('USD') }}</span>
-            <span class="mx-1">{{ language.common.of }}</span>
-            <span>{{ category.limit | currency('USD') }}</span>
+      <v-row class="flex-grow-0">
+        <v-col cols="12">
+          <div
+            v-for="category in resultItems"
+            class="progress-item mb-5"
+          >
+            <div class="progress-item__title mb-1">
+              <span class="font-weight-medium">{{ category.name }}: </span>
+              <span>{{ totalsSpentForCategory[category.id] | currency('USD') }}</span>
+              <span class="mx-1">{{ language.common.of }}</span>
+              <span>{{ category.limit | currency('USD') }}</span>
+            </div>
+
+            <v-tooltip top>
+              <template v-slot:activator="{ on }">
+                <v-progress-linear
+                  v-on="on"
+                  :color="getColorByPercent(percentageOfSpending(category.id))"
+                  height="16"
+                  :value="percentageOfSpending(category.id)"
+                ></v-progress-linear>
+              </template>
+
+              <span>
+                {{ totalsSpentForCategory[category.id] | currency('USD') }}
+                {{ language.common.of }}
+                {{ category.limit | currency('USD') }}
+              </span>
+            </v-tooltip>
+
+
           </div>
+        </v-col>
+      </v-row>
 
-          <v-tooltip top>
-            <template v-slot:activator="{ on }">
-              <v-progress-linear
-                v-on="on"
-                :color="getColorByPercent(percentageOfSpending(category.id))"
-                height="16"
-                :value="percentageOfSpending(category.id)"
-              ></v-progress-linear>
-            </template>
-
-            <span>
-              {{ totalsSpentForCategory[category.id] | currency('USD') }}
-              {{ language.common.of }}
-              {{ category.limit | currency('USD') }}
-            </span>
-          </v-tooltip>
-
-
-        </div>
-
-      </v-col>
+      <v-row v-if="defaultItems.length > 1" class="flex-grow-0 mt-auto">
+        <v-col
+          cols="12"
+          class="text-center mt-2"
+        >
+          <v-pagination
+            v-model="page"
+            :length="pagLength"
+            :total-visible="itemsVisible"
+          ></v-pagination>
+        </v-col>
+      </v-row>
     </template>
 
-  </v-row>
+  </div>
 
 </template>
 
 <script>
   import {mapActions, mapGetters, mapState} from 'vuex'
+  import Pagination from './../../../../mixins/pagination'
 
   export default {
     name: "PageContent",
 
+    mixins: [Pagination],
+
     data: () => ({
       totalsSpentForCategory: {},
     }),
+
+    watch: {
+      categories: {
+        handler(array) {
+          this.setupPagination([...array].reverse());
+        },
+        immediate: true,
+        deep: true
+      }
+    },
 
     computed: {
       ...mapState('spending', [

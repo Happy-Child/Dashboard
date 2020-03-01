@@ -27,6 +27,12 @@
   export default {
     name: 'SpendingListView',
 
+    metaInfo() {
+      return {
+        title: this.language.common.spendingListView
+      }
+    },
+
     components: {
       PageContent
     }

@@ -17,6 +17,16 @@
   export default {
     name: 'AdminHome',
 
+    metaInfo() {
+      return {
+        title: this.language.common.dashboard
+      }
+    },
+
+    data: () => ({
+
+    }),
+
     components: {
       PageContent
     }

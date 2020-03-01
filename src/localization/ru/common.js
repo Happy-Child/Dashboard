@@ -1,6 +1,5 @@
-import {SET_TOASTED_MESSAGE} from "../../store/mutation-types";
-
 export default {
+  home: 'Главная',
   toMain: 'На главную',
   dashboard: 'Админ панель',
   spendingList: 'Список расходов',

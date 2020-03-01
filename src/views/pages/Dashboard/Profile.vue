@@ -16,6 +16,13 @@
 
   export default {
     name: 'Profile',
+
+    metaInfo() {
+      return {
+        title: this.language.common.profile
+      }
+    },
+
     components: {
       PageContent
     }
