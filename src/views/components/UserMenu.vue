@@ -12,7 +12,7 @@
           :class="{'disabled': userLoading}"
           @click.prevent="elementToggle('userMenu')"
         >
-          <span class="font-weight-medium mr-3">
+          <span class="d-none d-md-block font-weight-medium mr-3">
             {{ userData.name }}
           </span>
 

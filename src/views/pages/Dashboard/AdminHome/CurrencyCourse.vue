@@ -1,5 +1,5 @@
 <template>
-  <v-col cols="8">
+  <v-col cols="12" md="8">
     <v-card class="fill-height">
       <v-card-title class="headline warning white--text">
         {{ language.common.currencyCourse }}

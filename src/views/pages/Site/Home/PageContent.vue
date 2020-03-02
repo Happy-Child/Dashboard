@@ -1,12 +1,10 @@
 <template>
 
-  <v-col
-    cols="12"
-  >
+  <div class="px-2">
     <div class="display-1">
       {{ language.home.mainTitle }}
     </div>
-  </v-col>
+  </div>
 
 </template>
 

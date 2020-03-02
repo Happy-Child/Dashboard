@@ -1,11 +1,11 @@
 <template>
-  <v-row
-    class="text-center fill-height align-center justify-center"
+  <div
+    class="d-flex align-center justify-center text-center fill-height"
   >
 
     <page-content />
 
-  </v-row>
+  </div>
 </template>
 
 <script>

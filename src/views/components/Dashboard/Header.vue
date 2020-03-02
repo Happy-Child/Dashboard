@@ -8,12 +8,12 @@
 
     <v-app-bar-nav-icon @click.prevent="drawerToggle"/>
 
-    <v-toolbar-title>
+    <v-toolbar-title class="d-none d-md-flex">
       <span class="mr-5">{{ language.header.siteName }}</span>
       <span>{{ curDate | date('datetime') }}</span>
     </v-toolbar-title>
 
-    <v-toolbar-title class="ml-auto mr-5">
+    <v-toolbar-title class="ml-auto mr-1 mr-md-5">
       <span v-if="!userLoading">
         {{ userData.bill | currency('USD') }}
       </span>
@@ -21,7 +21,7 @@
 
     <lang/>
 
-    <user-menu class="ml-5"/>
+    <user-menu class="ml-1 ml-md-5"/>
 
   </v-app-bar>
 </template>

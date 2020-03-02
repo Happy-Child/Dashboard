@@ -3,7 +3,7 @@
 
     <loader v-if="spendingLoading || categoriesLoading"/>
 
-    <v-col v-else cols="4">
+    <v-col v-else cols="12" md="4">
       <v-card
         class="py-4"
       >

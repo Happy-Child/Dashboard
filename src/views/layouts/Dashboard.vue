@@ -4,7 +4,7 @@
   >
 
     <app-navbar
-      :drawer-toggle="drawerState"
+      v-model="drawerState"
     />
 
     <app-header
@@ -14,7 +14,7 @@
     <v-content>
       <v-row
         justify="center"
-        class="px-5 py-2 fill-height"
+        class="mx-0 py-2 fill-height"
       >
 
         <router-view></router-view>
@@ -36,7 +36,7 @@
     name: "Dashboard",
 
     data: () => ({
-      drawerState: true,
+      drawerState: window.innerWidth > 1260,
     }),
 
     methods: {

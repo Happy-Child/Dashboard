@@ -28,7 +28,8 @@
     <template v-else>
       <v-row class="flex-grow-0">
         <v-col
-          cols="6"
+          cols="12"
+          md="6"
           v-for="category in resultItems"
           :key="category.id"
         >

@@ -1,7 +1,7 @@
 <template>
 
   <v-row>
-    <v-col cols="6">
+    <v-col cols="12" md="6">
       <loader v-if="userLoading"/>
 
       <v-form
@@ -9,12 +9,12 @@
         ref="form"
         lazy-validation
       >
-        <div class="upload-user-avatar d-flex align-start mb-5">
+        <div class="upload-user-avatar d-flex flex-wrap align-start mb-5">
           <div class="wrap-img">
             <img class="user-avatar-img" :src="userData.avatarUrl" alt="">
           </div>
 
-          <div class="upload-user-avatar-right pl-8">
+          <div class="upload-user-avatar-right pl-0 pl-md-8">
             <div v-if="cropperShow" class="wrap-cropper mb-5">
               <cropper
                 class="mb-5"
@@ -26,7 +26,7 @@
             </div>
 
             <v-row class="mb-3">
-              <v-col cols="6">
+              <v-col cols="12" md="6">
                 <v-btn
                   class="cropper-btn"
                   color="primary"
@@ -44,7 +44,7 @@
                 </v-btn>
               </v-col>
 
-              <v-col cols="6"v-if="cropperImage">
+              <v-col cols="12" md="6" v-if="cropperImage">
                 <v-btn
                   class="cropper-btn"
                   color="warning"
@@ -278,6 +278,13 @@
     width: 100%
     max-width: 50%
 
+    @media(max-width: 960px)
+      max-width: 500px
+      margin-left: auto
+      margin-right: auto
+      margin-bottom: 3rem
+
+
     &:after
       content: ''
       display: block
@@ -296,6 +303,11 @@
   .upload-user-avatar-right
     width: 100%
     max-width: 50%
+
+    @media(max-width: 960px)
+      margin-left: auto
+      margin-right: auto
+      max-width: 500px
 
 
   .wrap-cropper

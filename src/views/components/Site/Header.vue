@@ -5,7 +5,7 @@
     dark
   >
 
-    <v-toolbar-title>
+    <v-toolbar-title class="d-none d-md-flex">
       <span class="mr-5">{{ language.header.siteName }}</span>
     </v-toolbar-title>
 
@@ -34,7 +34,7 @@
       </v-btn>
     </div>
 
-    <user-menu class="ml-5" v-else />
+    <user-menu class="ml-1 ml-md-5" v-else />
 
     <login
       :modalShow="loginShow"

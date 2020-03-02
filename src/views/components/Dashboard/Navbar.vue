@@ -1,8 +1,8 @@
 <template>
   <v-navigation-drawer
-    v-model="drawerToggle"
-    app
+    v-model="localDrawer"
     :clipped="true"
+    app
   >
 
     <v-list dense>
@@ -35,9 +35,24 @@
     name: "Navbar",
 
     props: {
-      drawerToggle: {
-        type: Boolean,
-        default: true
+      value: {
+        type: Boolean
+      }
+    },
+
+    data() {
+      return {
+        localDrawer: this.value
+      }
+    },
+
+    watch: {
+      value() {
+        this.localDrawer = this.value
+      },
+
+      localDrawer() {
+        this.$emit('input', this.localDrawer)
       }
     },
 

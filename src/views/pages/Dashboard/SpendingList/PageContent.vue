@@ -25,7 +25,7 @@
     </v-col>
 
     <template v-else>
-      <v-col cols="3" class="mx-auto">
+      <v-col cols="12" md="6" lg="4" xl="3" class="mx-auto">
         <chart-pie
           :data="radialData"
           :options="chartOptions"

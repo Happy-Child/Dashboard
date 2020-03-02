@@ -1,5 +1,5 @@
 <template>
-  <v-col cols="4">
+  <v-col cols="12" md="4">
     <v-card class="fill-height">
       <v-card-title class="headline warning white--text">
         {{ language.common.currentInvoice }}
