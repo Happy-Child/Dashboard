@@ -18,7 +18,7 @@
       class="d-flex"
     >
       <v-btn
-        class="ma-2"
+        class="ma-1 ma-md-2"
         outlined
         @click="toggleModalLogin"
       >
@@ -26,7 +26,7 @@
       </v-btn>
 
       <v-btn
-        class="ma-2"
+        class="ma-1 ma-md-2"
         color="success"
         @click="toggleModalRegistration"
       >

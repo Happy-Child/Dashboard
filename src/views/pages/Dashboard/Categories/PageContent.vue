@@ -92,7 +92,9 @@
     watch: {
       categories: {
         handler(array) {
-          this.setupPagination([...array].reverse());
+          if(array.length) {
+            this.setupPagination([...array].reverse());
+          }
         },
         immediate: true,
         deep: true

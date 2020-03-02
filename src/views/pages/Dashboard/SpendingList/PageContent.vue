@@ -109,12 +109,14 @@
     watch: {
       spending: {
         handler(array) {
-          const resultArray = [...array].reverse().map((item, index) => ({
-            ...item,
-            index: index + 1
-          }));
+          if(array.length) {
+            const resultArray = [...array].reverse().map((item, index) => ({
+              ...item,
+              index: index + 1
+            }));
 
-          this.setupPagination(resultArray);
+            this.setupPagination(resultArray);
+          }
         },
         immediate: true,
         deep: true

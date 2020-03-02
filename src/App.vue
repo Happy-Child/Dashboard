@@ -99,4 +99,9 @@
     top: 10px
     right: 10px
 
+  @media(max-width: 960px)
+    html
+      font-size: 14px !important
+
+
 </style>
